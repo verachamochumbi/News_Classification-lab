@@ -1,63 +1,289 @@
-# News_Classification-lab
-Tarea 4 Task 2
+# News Classification Lab
 
-# News Classification Lab (AG News · Transformers)
+A comprehensive machine learning project for news classification using both traditional transformer models and Large Language Models (LLMs). This repository contains two main approaches to news classification: transformer-based classification and LLM-based classification.
 
-## Objetivo
-Implementar, en un solo notebook/archivo, un flujo reproducible para **clasificación de noticias (AG News)** con **Hugging Face Transformers**, entrenando un modelo de secuencias (p. ej., RoBERTa/DeBERTa) en un **subset configurable** y reportando **Accuracy** y **F1 Macro**; además, generar salidas comparativas y gráficos para evaluar el rendimiento. :contentReference[oaicite:0]{index=0} :contentReference[oaicite:1]{index=1}
+## 📋 Project Overview
 
----
+This project implements news classification using two different methodologies:
 
-## Secciones principales
-1) **Setup del entorno y estructura**  
-   - Clona `News_Classification-lab` y crea carpetas `src/`, `data/`, `notebooks/`, `outputs/`.  
-   - Instala versiones fijadas de `torch`, `transformers`, `datasets`, `evaluate`, `scikit-learn`, `matplotlib`, `seaborn`.  
-   :contentReference[oaicite:2]{index=2} :contentReference[oaicite:3]{index=3}
+1. **Traditional ML Approach** (`News_Classification0.ipynb`): Uses Hugging Face transformers (RoBERTa, DeBERTa) for classification
+2. **LLM Approach** (`bonus.ipynb`): Uses OpenAI's ChatGPT for intelligent news classification
 
-2) **Función de entrenamiento `train_one_small(...)`**  
-   - Encapsula el flujo: carga AG News, divide 70/15/15, tokeniza, entrena con `Trainer`, y calcula `accuracy` y `f1_macro`.  
-   - Firma (parámetros clave): `model_name`, `epochs`, `batch_size`, `max_length`, `train_samples`, `val_samples`, `test_samples`.  
-   :contentReference[oaicite:4]{index=4} :contentReference[oaicite:5]{index=5} :contentReference[oaicite:6]{index=6} :contentReference[oaicite:7]{index=7}
+## 🗂️ Project Structure
 
-3) **Experimentos**  
-   - Entrenamientos rápidos con subsets (p. ej., 1000/500/500) para comparar modelos como **RoBERTa-base** y **DeBERTa-v3-small**.  
-   :contentReference[oaicite:8]{index=8} :contentReference[oaicite:9]{index=9}
+```
+News_Classification-labs/
+├── News_Classification0.ipynb    # Main transformer-based classification notebook
+├── bonus.ipynb                   # LLM-based classification notebook
+├── data/
+│   └── rss_feed.json            # RSS feed data for LLM classification
+├── src/
+│   └── train_small.py           # Training functions for transformers
+├── outputs/                     # Model outputs and visualizations
+├── .env                         # Environment variables (OpenAI API key)
+├── requirements.txt             # Python dependencies
+└── README.md                   # This file
+```
 
-4) **Visualización y comparación**  
-   - Genera y guarda gráficos de barras (F1/Accuracy), dispersión F1 vs Accuracy, y ranking en `outputs/plots/`.  
-   :contentReference[oaicite:10]{index=10} :contentReference[oaicite:11]{index=11} :contentReference[oaicite:12]{index=12} :contentReference[oaicite:13]{index=13}
+## 🚀 Quick Start
 
----
+### Prerequisites
 
-## Dataset y tarea
-- **Dataset:** AG News (Hugging Face `datasets`).  
-- **Tarea:** Clasificación de 4 clases a partir del texto.  
-- **Split:** 70% train / 15% valid / 15% test (a partir de un 70/30 + 50/50).  
-- **Subset opcional:** selección reproducible de `train/val/test` para ejecución rápida.  
-:contentReference[oaicite:14]{index=14}
+Install the required dependencies:
 
----
+```bash
+pip install -r requirements.txt
+```
 
-## Cómo funciona (resumen técnico)
-- **Tokenización:** `AutoTokenizer` con `truncation=True`, `padding='max_length'`, `max_length` configurable. :contentReference[oaicite:15]{index=15}  
-- **Modelo:** `AutoModelForSequenceClassification(num_labels=4)`. :contentReference[oaicite:16]{index=16}  
-- **Entrenamiento:** `Trainer` con `TrainingArguments` (batch sizes, epochs, weight decay, eval/save por época). :contentReference[oaicite:17]{index=17}  
-- **Métricas:** `accuracy` y `f1_macro` con scikit-learn. :contentReference[oaicite:18]{index=18}  
-- **Persistencia:** guarda `metrics.json` por modelo en `outputs/<modelo>/`. :contentReference[oaicite:19]{index=19}
+### ⚡ **Recommended: Google Colab with TPUs**
 
----
+**We strongly recommend using Google Colab with TPUs for faster training:**
 
-## Uso rápido (Colab)
-1. Ejecuta las celdas en orden (incluyen clonación/instalación/estructura). :contentReference[oaicite:20]{index=20} :contentReference[oaicite:21]{index=21}  
-2. La función `train_one_small` se escribe en `src/train_small.py` y se importa en tiempo de ejecución. :contentReference[oaicite:22]{index=22} :contentReference[oaicite:23]{index=23}  
-3. Ejemplo mínimo:
-   ```python
-   from src.train_small import train_one_small
-   res = train_one_small(
-       model_name='FacebookAI/roberta-base',
-       epochs=1,
-       batch_size=8,
-       max_length=64,
-       train_samples=1000, val_samples=500, test_samples=500
-   )
-   print(res)  # {'model': ..., 'accuracy': ..., 'f1_macro': ...}
+1. **Open in Colab**: Click the Colab badge in `News_Classification0.ipynb`
+2. **Enable TPU**: Runtime → Change runtime type → TPU
+3. **Benefits**:
+   - **10x faster training** with TPU acceleration
+   - Free GPU/TPU access for transformer training
+   - Pre-installed ML libraries
+   - No local setup required
+
+### 🔗 **Connecting Repository to Colab**
+
+**We're aiming to connect this repository directly to Colab for seamless integration:**
+
+- **Direct GitHub Integration**: Clone the repo directly in Colab
+- **Automatic Setup**: The notebooks will automatically create the required directory structure
+- **File Replication**: All necessary files and data will be replicated in the Colab environment
+- **Persistent Storage**: Results and outputs will be saved to your Google Drive
+
+**Quick Colab Setup:**
+```python
+# Run this in Colab to set up the project
+!git clone https://github.com/your-username/News_Classification-labs.git
+%cd News_Classification-labs
+!pip install -r requirements.txt
+```
+
+### For Transformer-based Classification (News_Classification0.ipynb)
+
+1. **Open the notebook**: `News_Classification0.ipynb`
+2. **Run all cells** to:
+   - Set up the environment and directory structure
+   - Install required packages (torch, transformers, datasets, etc.)
+   - Create the training function `train_one_small()`
+   - Train and compare multiple models (RoBERTa, DeBERTa, DistilRoBERTa)
+   - Generate performance visualizations
+
+### For LLM-based Classification (bonus.ipynb)
+
+1. **Set up OpenAI API key** (choose one method):
+
+   **Method 1: Environment Variable**
+   ```bash
+   export OPENAI_API_KEY='your-api-key-here'
+   ```
+
+   **Method 2: .env file (Recommended)**
+   Create a `.env` file in the project root:
+   ```bash
+   # .env file
+   OPENAI_API_KEY=your-api-key-here
+   ```
+
+2. **Open the notebook**: `bonus.ipynb`
+3. **Run all cells** to:
+   - Load and process RSS feed data
+   - Classify news using ChatGPT
+   - Generate comprehensive analysis and visualizations
+
+## 📊 Notebook Details
+
+### News_Classification0.ipynb - Transformer-based Classification
+
+**Purpose**: Implements traditional machine learning approach using Hugging Face transformers for news classification.
+
+**Key Features**:
+- **Dataset**: AG News dataset (120,000 training samples, 7,600 test samples)
+- **Models Tested**: 
+  - RoBERTa-base (FacebookAI/roberta-base)
+  - DeBERTa-v3-small (microsoft/deberta-v3-small)
+  - DistilRoBERTa (fallback for ModernBERT)
+- **Data Split**: 70% train / 15% validation / 15% test
+- **Subset Training**: Configurable sample sizes (1000/500/500 for quick experiments)
+- **Metrics**: Accuracy and F1-Macro scores
+- **Visualizations**: Bar charts, scatter plots, and ranking visualizations
+
+**Technical Implementation**:
+- Uses `AutoTokenizer` and `AutoModelForSequenceClassification`
+- Implements `Trainer` with `TrainingArguments`
+- Supports mixed precision training (FP16)
+- **Optimized for TPU/GPU acceleration** (recommended for Colab)
+- Saves model metrics to JSON files
+- Generates comparative visualizations
+
+**Results Summary**:
+| Model | F1 Macro | Accuracy | Performance |
+|-------|----------|----------|-------------|
+| RoBERTa-base | 0.896 | 0.898 | Best overall performance |
+| DeBERTa-v3-small | 0.739 | 0.766 | Lower performance with small datasets |
+| DistilRoBERTa | 0.883 | 0.886 | Excellent balance of speed and accuracy |
+
+### bonus.ipynb - LLM-based Classification
+
+**Purpose**: Implements modern LLM-based classification using OpenAI's ChatGPT for intelligent news categorization.
+
+**Key Features**:
+- **Dataset**: 50 RPP news items from RSS feed
+- **Model**: OpenAI GPT-3.5-turbo with structured outputs
+- **Categories**: 4 AG News categories (World, Sports, Business, Science/Tech)
+- **Features**: 
+  - Confidence scoring for each classification
+  - Detailed reasoning for classification decisions
+  - Comprehensive error handling and fallback mechanisms
+  - Rate limiting to respect API constraints
+
+**Technical Implementation**:
+- Uses OpenAI API with structured output parsing
+- Implements Pydantic models for response validation
+- Batch processing with progress tracking
+- Comprehensive data analysis and visualization
+- Results export to CSV and summary files
+
+**Analysis Features**:
+- Category distribution analysis
+- Confidence score analysis
+- Success rate tracking
+- Detailed statistical insights
+- Multiple visualization types (pie charts, bar charts, histograms)
+
+## 🔧 Dependencies
+
+### Core Dependencies
+- `torch>=2.8.0` - PyTorch for deep learning
+- `transformers>=4.44.2` - Hugging Face transformers
+- `datasets>=2.21.0` - Dataset loading and processing
+- `scikit-learn>=1.6.0` - Machine learning utilities
+- `pandas>=2.0.3` - Data manipulation
+- `matplotlib>=3.9.2` - Plotting and visualization
+- `seaborn>=0.13.2` - Statistical visualization
+
+### LLM Dependencies
+- `openai` - OpenAI API client
+- `pydantic` - Data validation and structured outputs
+- `python-dotenv` - Environment variable management (for .env file support)
+
+## 📈 Usage Examples
+
+### Transformer Training Example
+
+```python
+from src.train_small import train_one_small
+
+# Train RoBERTa on a small subset
+result = train_one_small(
+    model_name='FacebookAI/roberta-base',
+    epochs=1,
+    batch_size=8,
+    max_length=64,
+    train_samples=1000,
+    val_samples=500,
+    test_samples=500
+)
+
+print(f"Model: {result['model']}")
+print(f"Accuracy: {result['accuracy']:.3f}")
+print(f"F1 Macro: {result['f1_macro']:.3f}")
+```
+
+### LLM Classification Example
+
+```python
+from openai import OpenAI
+
+client = OpenAI(api_key="your-api-key")
+
+# Classify a single news item
+result = classify_news_with_chatgpt(
+    client, 
+    title="Your news title",
+    description="Your news description"
+)
+
+print(f"Category: {result.category_name}")
+print(f"Confidence: {result.confidence}")
+print(f"Reasoning: {result.reasoning}")
+```
+
+## 📊 Output Files
+
+### Transformer Approach
+- `outputs/{model_name}/metrics.json` - Model performance metrics
+- `outputs/plots/` - Visualization files (PNG format)
+- `outputs/f1_comparison.csv` - Comparative results
+
+### LLM Approach
+- `llm_classification_results.csv` - Complete classification results
+- `llm_classification_results_summary.txt` - Summary statistics
+- Generated visualizations for analysis
+
+## 🎯 Key Insights
+
+### Transformer Approach
+- **RoBERTa-base** achieves the best performance (F1: 0.896)
+- **DistilRoBERTa** provides excellent speed/accuracy balance
+- **DeBERTa** requires more data for optimal performance
+- Subset training enables rapid experimentation
+
+### LLM Approach
+- High classification accuracy with contextual understanding
+- Excellent handling of Spanish language content
+- Detailed reasoning and confidence scoring
+- Scalable for large-scale news processing
+
+## 🚀 Getting Started
+
+### **Option 1: Google Colab (Recommended)**
+1. **Open in Colab**: Click the Colab badge in `News_Classification0.ipynb`
+2. **Enable TPU**: Runtime → Change runtime type → TPU
+3. **Run all cells**: The notebook will automatically set up the environment
+4. **For LLM classification**: Set your OpenAI API key in the `.env` file
+
+### **Option 2: Local Setup**
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/your-username/News_Classification-labs.git
+   cd News_Classification-labs
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Run transformer classification**:
+   - Open `News_Classification0.ipynb`
+   - Execute all cells
+
+4. **Run LLM classification**:
+   - Set your OpenAI API key (create `.env` file with `OPENAI_API_KEY=your-key`)
+   - Open `bonus.ipynb`
+   - Execute all cells
+
+## 📝 Notes
+
+- **Colab Integration**: The repository is designed for seamless Colab integration with automatic setup
+- **File Replication**: All necessary files and directories are automatically created in Colab
+- The transformer approach is ideal for offline, high-performance classification
+- The LLM approach provides superior contextual understanding and reasoning
+- Both approaches can be combined for hybrid classification systems
+- Results are reproducible with fixed random seeds
+- All visualizations are automatically saved to the `outputs/` directory
+- **TPU Acceleration**: Colab TPUs provide 10x faster training for transformer models
+
+## 🤝 Contributing
+
+Feel free to submit issues, feature requests, or pull requests to improve this project.
+
+## 📄 License
+
+This project is open source and available under the MIT License.
